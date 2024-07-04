@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfect Pizza Cart</title>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.7.1/dist/cdn.min.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div x-data="pizzaCart()" class="container">
+    <h1>Perfect Pizza Online Order</h1>
+    <div class="pizza-menu">
+        <div class="pizza">
+            <h3>Small Pizza</h3>
+            <button @click="addToCart('small')">Order</button>
+        </div>
+        <div class="pizza">
+            <h3>Medium Pizza</h3>
+            <button @click="addToCart('medium')">Order</button>
+        </div>
+        <div class="pizza">
+            <h3>Large Pizza</h3>
+            <button @click="addToCart('large')">Order</button>
+        </div>
+    </div>
+
+    <div class="cart" x-show="cart.length > 0">
+        <h2>Cart</h2>
+        <ul>
+            <template x-for="(item, index) in cart" :key="index">
+                <li>
+                    <span x-text="item.size + ' Pizza x ' + item.quantity"></span>
+                    <button @click="removeFromCart(index)">Remove</button>
+                </li>
+            </template>
+        </ul>
+        <p>Total Small Pizzas: <span x-text="totalSmall"></span></p>
+        <p>Total Medium Pizzas: <span x-text="totalMedium"></span></p>
+        <p>Total Large Pizzas: <span x-text="totalLarge"></span></p>
+        <p>Total Cost: $<span x-text="totalCost"></span></p>
+        <button @click="checkout()">Check Out</button>
+    </div>
+
+    <div x-show="showPayment" class="payment">
+        <h2>Checkout</h2>
+        <input type="number" x-model="paymentAmount" placeholder="Enter payment amount">
+        <button @click="processPayment()">Pay</button>
+        <p x-text="message" class="message"></p>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -4,53 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfect Pizza Cart</title>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.7.1/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.7.1/dist/cdn.min.js" defer></script>
 </head>
 <body>
-
-<div x-data="pizzaCart()" class="container">
-    <h1>Perfect Pizza Online Order</h1>
-    <div class="pizza-menu">
-        <div class="pizza">
-            <h3>Small Pizza</h3>
-            <button @click="addToCart('small')">Order</button>
-        </div>
-        <div class="pizza">
-            <h3>Medium Pizza</h3>
-            <button @click="addToCart('medium')">Order</button>
-        </div>
-        <div class="pizza">
-            <h3>Large Pizza</h3>
-            <button @click="addToCart('large')">Order</button>
-        </div>
-    </div>
-
-    <div class="cart" x-show="cart.length > 0">
-        <h2>Cart</h2>
-        <ul>
-            <template x-for="(item, index) in cart" :key="index">
-                <li>
-                    <span x-text="item.size + ' Pizza x ' + item.quantity"></span>
-                    <button @click="removeFromCart(index)">Remove</button>
-                </li>
+    <div class="container" x-data="pizzaCart()">
+        <h1>Perfect Pizza Order</h1>
+        <div class="menu">
+            <template x-for="(pizza, index) in pizzas" :key="index">
+                <div class="pizza">
+                    <h2 x-text="pizza.name"></h2>
+                    <p>Size: <span x-text="pizza.size"></span></p>
+                    <p>Price: R<span x-text="pizza.price.toFixed(2)"></span></p>
+                    <button @click="addToCart(index)">Order</button>
+                </div>
             </template>
-        </ul>
-        <p>Total Small Pizzas: <span x-text="totalSmall"></span></p>
-        <p>Total Medium Pizzas: <span x-text="totalMedium"></span></p>
-        <p>Total Large Pizzas: <span x-text="totalLarge"></span></p>
-        <p>Total Cost: $<span x-text="totalCost"></span></p>
-        <button @click="checkout()">Check Out</button>
+        </div>
+        <div class="cart">
+            <h2>Your Cart</h2>
+            <template x-for="(item, index) in cart" :key="index">
+                <div class="cart-item">
+                    <p x-text="item.name + ' (' + item.size + ')'"></p>
+                    <p>Price: R<span x-text="(item.price * item.quantity).toFixed(2)"></span></p>
+                    <button class="decrement" @click="decrement(index)">-</button>
+                    <span x-text="item.quantity"></span>
+                    <button class="increment" @click="increment(index)">+</button>
+                </div>
+            </template>
+            <div class="cart-total" x-show="cart.length > 0">
+                <h3>Total: R<span x-text="total.toFixed(2)"></span></h3>
+                <button @click="checkout()">Check Out</button>
+            </div>
+        </div>
+        <div class="payment" x-show="showPayment">
+            <h2>Enter Payment Amount</h2>
+            <input type="number" x-model.number="paymentAmount">
+            <button @click="processPayment()">Submit</button>
+        </div>
+        <div class="message" x-show="message">
+            <p x-text="message"></p>
+        </div>
     </div>
-
-    <div x-show="showPayment" class="payment">
-        <h2>Checkout</h2>
-        <input type="number" x-model="paymentAmount" placeholder="Enter payment amount">
-        <button @click="processPayment()">Pay</button>
-        <p x-text="message" class="message"></p>
-    </div>
-</div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

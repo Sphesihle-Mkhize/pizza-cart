@@ -1,63 +1,60 @@
 function pizzaCart() {
     return {
+        pizzas: [
+            { name: 'Margherita', size: 'Small', price: 80 },
+            { name: 'Pepperoni', size: 'Medium', price: 100 },
+            { name: 'Hawaiian', size: 'Large', price: 120 },
+        ],
         cart: [],
-        totalSmall: 0,
-        totalMedium: 0,
-        totalLarge: 0,
-        totalCost: 0,
+        total: 0,
         showPayment: false,
         paymentAmount: 0,
         message: '',
-
-        addToCart(size) {
-            let found = false;
-            this.cart.forEach(item => {
-                if (item.size === size) {
-                    item.quantity++;
-                    found = true;
-                }
-            });
-            if (!found) {
-                this.cart.push({ size: size, quantity: 1 });
+        
+        addToCart(index) {
+            const pizza = this.pizzas[index];
+            const cartItem = this.cart.find(item => item.name === pizza.name && item.size === pizza.size);
+            if (cartItem) {
+                cartItem.quantity++;
+            } else {
+                this.cart.push({ ...pizza, quantity: 1 });
             }
-            this.updateTotals();
+            this.calculateTotal();
         },
-
-        removeFromCart(index) {
-            this.cart.splice(index, 1);
-            this.updateTotals();
+        
+        increment(index) {
+            this.cart[index].quantity++;
+            this.calculateTotal();
         },
-
-        updateTotals() {
-            this.totalSmall = this.cart.filter(item => item.size === 'small').reduce((sum, item) => sum + item.quantity, 0);
-            this.totalMedium = this.cart.filter(item => item.size === 'medium').reduce((sum, item) => sum + item.quantity, 0);
-            this.totalLarge = this.cart.filter(item => item.size === 'large').reduce((sum, item) => sum + item.quantity, 0);
-            this.totalCost = this.totalSmall * 8 + this.totalMedium * 10 + this.totalLarge * 12;
+        
+        decrement(index) {
+            if (this.cart[index].quantity > 1) {
+                this.cart[index].quantity--;
+            } else {
+                this.cart.splice(index, 1);
+            }
+            this.calculateTotal();
         },
-
+        
+        calculateTotal() {
+            this.total = this.cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        },
+        
         checkout() {
             this.showPayment = true;
+            this.message = '';
         },
-
+        
         processPayment() {
-            if (this.paymentAmount >= this.totalCost) {
+            if (this.paymentAmount >= this.total) {
                 this.message = 'Enjoy your pizzas!';
-                setTimeout(() => this.message = '', 3000);
-                this.clearCart();
+                this.cart = [];
+                this.total = 0;
             } else {
                 this.message = 'Sorry - that is not enough money!';
-                setTimeout(() => this.message = '', 3000);
             }
-        },
-
-        clearCart() {
-            this.cart = [];
-            this.totalSmall = 0;
-            this.totalMedium = 0;
-            this.totalLarge = 0;
-            this.totalCost = 0;
             this.showPayment = false;
             this.paymentAmount = 0;
         }
-    }
+    };
 }

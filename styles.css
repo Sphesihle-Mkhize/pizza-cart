@@ -1,69 +1,73 @@
 body {
     font-family: Arial, sans-serif;
+    background-color: #f571a8;
     margin: 0;
-    padding: 20px;
-    background-color: #c75bdd;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: #d68ba2;
+    background: rgb(161, 46, 109);
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(248, 144, 144, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 1200px;
 }
 
 h1 {
     text-align: center;
-    color: #333;
 }
 
-.pizza-menu {
+.menu, .cart, .payment, .message {
+    margin-top: 20px;
+}
+
+.menu {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
 .pizza {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    width: 200px;
+    margin-bottom: 20px;
     text-align: center;
+}
+
+.cart-item {
+    border-bottom: 1px solid #dd8e8e;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cart-total {
+    text-align: right;
+    margin-top: 10px;
 }
 
 button {
-    padding: 10px 15px;
-    background-color: #77d88e;
-    color: #e76767;
+    background-color: #c351f0;
+    color: rgb(245, 210, 158);
     border: none;
-    border-radius: 5px;
+    padding: 10px 20px;
+    border-radius: 4px;
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #b8a81b;
+button:disabled {
+    background-color: #84e4eb;
+    cursor: not-allowed;
 }
 
-.cart {
-    margin-top: 20px;
-}
-
-.cart ul {
-    list-style: none;
-    padding: 0;
-}
-
-.cart li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.payment {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.message {
-    margin-top: 10px;
-    color: red;
+button.decrement, button.increment {
+    padding: 5px 10px;
 }
